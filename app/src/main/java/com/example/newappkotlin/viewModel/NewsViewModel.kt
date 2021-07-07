@@ -4,10 +4,13 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.newappkotlin.Utility.StringKs
 import com.example.newappkotlin.model.NewsModelKotlin
 import com.example.newappkotlin.network.ApiInterface
 import com.example.newappkotlin.network.RetrofitInstance
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -22,11 +25,14 @@ class NewsViewModel: ViewModel() {
         return newsModel
     }
 
-    fun apiCall() {
+     fun apiCall() {
+        viewModelScope.launch(Dispatchers.IO) {
          apiInterface = RetrofitInstance.getRetrofitInstance().create(ApiInterface::class.java)
-        val call: Call<NewsModelKotlin> = apiInterface.getNewsArticles(StringKs.INDIA_CODE, StringKs.API_KEY)
-
-        call.enqueue(object : Callback<NewsModelKotlin>{
+            val response = apiInterface.getNewsArticles(StringKs.INDIA_CODE, StringKs.API_KEY)
+        //val call: Call<NewsModelKotlin> = apiInterface.getNewsArticles(StringKs.INDIA_CODE, StringKs.API_KEY)
+        newsModel.postValue(response)
+        }
+        /*call.enqueue(object : Callback<NewsModelKotlin>{
             override fun onResponse(
                 call: Call<NewsModelKotlin>,
                 response: Response<NewsModelKotlin>
@@ -38,6 +44,6 @@ class NewsViewModel: ViewModel() {
                 Log.e("error", t.message+" ")
             }
 
-        })
+        })*/
     }
 }

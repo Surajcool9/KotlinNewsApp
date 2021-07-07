@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -34,6 +35,8 @@ class MainActivity : AppCompatActivity(), AdapterKotlinNews.ClickOnCard {
                 if(t?.status.equals(StringKs.STATUS_API)) {
                     articles = t?.articles!!
                     setAdapter(articles)
+                } else {
+                    Toast.makeText(this,"No Data Available", Toast.LENGTH_SHORT).show()
                 }
             })
 

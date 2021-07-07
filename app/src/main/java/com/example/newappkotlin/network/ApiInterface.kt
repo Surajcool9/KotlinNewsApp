@@ -7,6 +7,6 @@ import retrofit2.http.*
 interface ApiInterface {
 
     @GET("/v2/top-headlines")
-    fun getNewsArticles(@Query("country") country: String, @Query("apiKey") apiKey: String) : Call<NewsModelKotlin>
+    suspend fun getNewsArticles(@Query("country") country: String, @Query("apiKey") apiKey: String) : NewsModelKotlin
 
 }
